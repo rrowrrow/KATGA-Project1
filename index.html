@@ -42,6 +42,15 @@
 
       <textarea id="shareText" class="shareText" readonly
         placeholder="Hasil emoji akan muncul di sini setelah ada tebakan..."></textarea>
+      <!-- Modal Makna Kata -->
+<div id="meaningModal" class="modal" aria-hidden="true">
+  <div class="modalContent" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h2 id="modalTitle">Makna Kata</h2>
+    <p class="modalWord">Kata: <b id="modalWord">-</b></p>
+    <p id="modalMeaning" class="modalMeaning">-</p>
+    <button id="closeModal" class="btn primary">Tutup</button>
+  </div>
+</div>
     </section>
 
     <footer class="footer">
