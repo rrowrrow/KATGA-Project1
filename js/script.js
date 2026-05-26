@@ -81,13 +81,10 @@ async function loadK3Words(){
   setMessage("Kamus siap. Tebak istilah K3!");
 }
 
-/* Daily answer: semua orang dapat kata sama di hari yang sama */
-function pickDailyAnswer(pool){
-  const d = new Date();
-  const key = `${d.getUTCFullYear()}-${d.getUTCMonth()+1}-${d.getUTCDate()}`;
-  let h = 0;
-  for(let i=0;i<key.length;i++) h = (h*31 + key.charCodeAt(i)) >>> 0;
-  return pool[h % pool.length];
+/* Daily answer: random */
+function pickRandomAnswer(pool){
+  const i = Math.floor(Math.random() * pool.length);
+  return pool[i];
 }
 
 /* UI build */
