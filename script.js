@@ -1,4 +1,4 @@
-/* KATGA K3 - Wordle-like (5 huruf) khusus istilah K3 */
+/* KATGA K3 (5 huruf) + popup makna kata saat menang */
 
 const ROWS = 6;
 const COLS = 5;
@@ -12,26 +12,12 @@ const resetBtn = document.getElementById("reset");
 const shareBtn = document.getElementById("share");
 const messageEl = document.getElementById("message");
 const shareTextEl = document.getElementById("shareText");
-const categoryEl = document.getElementById("category");
+
+/* Modal DOM */
 const meaningModal = document.getElementById("meaningModal");
 const modalWordEl = document.getElementById("modalWord");
 const modalMeaningEl = document.getElementById("modalMeaning");
 const closeModalBtn = document.getElementById("closeModal");
-
-/* Data */
-let wordsReady = false;
-let ANSWERS = [];         // {word, category}
-let VALID_SET = new Set();
-let answer = null;        // {word, category}
-
-/* State */
-let cells = [];
-let keyButtons = new Map();
-let currentRow = 0;
-let currentCol = 0;
-let gameOver = false;
-let guesses = Array.from({ length: ROWS }, () => Array(COLS).fill(""));
-let colorHistory = [];
 
 /* Keyboard layout */
 const KEY_LAYOUT = [
@@ -42,6 +28,22 @@ const KEY_LAYOUT = [
 
 const RANK = { b: 1, y: 2, g: 3 };
 
+/* Game data */
+let wordsReady = false;
+let ANSWERS = [];         // [{word, meaning}]
+let VALID_SET = new Set();
+let answer = null;        // {word, meaning}
+
+/* State */
+let cells = [];
+let keyButtons = new Map();
+let currentRow = 0;
+let currentCol = 0;
+let gameOver = false;
+let guesses = Array.from({ length: ROWS }, () => Array(COLS).fill(""));
+let colorHistory = [];
+
+/* Helpers */
 function setMessage(t){ messageEl.textContent = t || ""; }
 function idx(r,c){ return r * COLS + c; }
 function getRowWord(r){ return guesses[r].join(""); }
@@ -51,10 +53,28 @@ function clampGuessString(s){
   return (s || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, COLS);
 }
 
-/* Load JSON K3 */
+/* ===== Modal functions ===== */
+function openMeaningModal(word, meaning){
+  modalWordEl.textContent = word;
+  modalMeaningEl.textContent = meaning || "Belum ada definisi untuk kata ini.";
+  meaningModal.classList.add("show");
+  meaningModal.setAttribute("aria-hidden", "false");
+}
+function closeMeaningModal(){
+  meaningModal.classList.remove("show");
+  meaningModal.setAttribute("aria-hidden", "true");
+}
+closeModalBtn.addEventListener("click", closeMeaningModal);
+meaningModal.addEventListener("click", (e) => {
+  if(e.target === meaningModal) closeMeaningModal();
+});
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape") closeMeaningModal();
+});
+
+/* ===== Load JSON ===== */
 async function loadK3Words(){
   setMessage("Memuat kamus K3...");
-  // Path absolut agar stabil di Vercel (hindari 404 karena path relatif)
   const res = await fetch("/data/k3-words.json", { cache: "no-store" });
   if(!res.ok) throw new Error("Gagal load /data/k3-words.json: " + res.status);
 
@@ -66,31 +86,54 @@ async function loadK3Words(){
   const norm = (w) => String(w).toUpperCase().replace(/[^A-Z]/g,"");
 
   ANSWERS = data.answers
-    .map(x => ({ word: norm(x.word), category: String(x.category || "-") }))
+    .map(x => ({
+      word: norm(x.word),
+      meaning: String(x.meaning || "")
+    }))
     .filter(x => x.word.length === 5);
 
   const valid = data.validGuesses.map(norm).filter(w => w.length === 5);
-
-  // Pastikan semua jawaban juga valid ditebak
+  // pastikan semua jawaban juga valid
   for(const a of ANSWERS) valid.push(a.word);
-
   VALID_SET = new Set(valid);
 
   if(ANSWERS.length === 0) throw new Error("Jawaban kosong setelah normalisasi.");
 
-  answer = pickRandomAnswer(ANSWERS); // daily
-
   wordsReady = true;
-  setMessage("Kamus siap. Tebak istilah K3!");
+  setMessage("Kamus siap. Mulai tebak!");
+  pickNextAnswer(); // set answer pertama
 }
 
-/* Daily answer: random */
-function pickRandomAnswer(pool){
-  const i = Math.floor(Math.random() * pool.length);
-  return pool[i];
+/* ===== Shuffle Bag (jawaban tidak berulang sampai habis) ===== */
+const BAG_KEY = "katga_k3_answer_bag_v1";
+
+function newShuffledBag(){
+  const arr = ANSWERS.map(x => x.word);
+  // Fisher-Yates shuffle
+  for(let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
-/* UI build */
+function pickNextAnswer(){
+  let bag = [];
+  try { bag = JSON.parse(localStorage.getItem(BAG_KEY) || "[]"); } catch(_) { bag = []; }
+
+  if(!Array.isArray(bag) || bag.length === 0){
+    bag = newShuffledBag();
+  }
+
+  const nextWord = bag.pop();
+  localStorage.setItem(BAG_KEY, JSON.stringify(bag));
+
+  // ambil meaning dari ANSWERS
+  const found = ANSWERS.find(x => x.word === nextWord);
+  answer = found || { word: nextWord, meaning: "" };
+}
+
+/* ===== UI build ===== */
 function buildBoard(){
   boardEl.innerHTML = "";
   cells = [];
@@ -112,6 +155,11 @@ function renderAll(){
 function renderRow(r){
   for(let c=0;c<COLS;c++){
     cells[idx(r,c)].textContent = guesses[r][c] || "";
+    // jangan reset warna row lama di sini
+    if(r >= currentRow){
+      // row aktif dan setelahnya bersih warnanya
+      cells[idx(r,c)].classList.remove("g","y","b");
+    }
   }
 }
 
@@ -153,7 +201,7 @@ function addLetter(ch){
   if(gameOver || currentRow>=ROWS || currentCol>=COLS) return;
   guesses[currentRow][currentCol] = ch;
   currentCol++;
-  renderRow(currentRow);
+  cells[idx(currentRow, currentCol-1)].textContent = ch;
   inputEl.value = guesses[currentRow].join("");
 }
 
@@ -161,11 +209,11 @@ function removeLetter(){
   if(gameOver || currentRow>=ROWS || currentCol<=0) return;
   currentCol--;
   guesses[currentRow][currentCol] = "";
-  renderRow(currentRow);
+  cells[idx(currentRow, currentCol)].textContent = "";
   inputEl.value = guesses[currentRow].join("");
 }
 
-/* Evaluasi Wordle (2-pass) */
+/* ===== Evaluate Wordle (2-pass) ===== */
 function evaluateGuess(guess, answerWord){
   const result = Array(COLS).fill("b");
   const ans = answerWord.split("");
@@ -212,83 +260,13 @@ function updateKeyboardColors(word, colors){
   }
 }
 
-/* Submit */
-function submitRow(){
-  if(!wordsReady){
-    setMessage("Kamus belum siap / file data belum terbaca.");
-    return;
-  }
-  if(gameOver || currentRow>=ROWS) return;
-
-  // sinkron input (mobile)
-  const clean = clampGuessString(inputEl.value);
-  guesses[currentRow] = Array(COLS).fill("");
-  for(let i=0;i<clean.length;i++) guesses[currentRow][i] = clean[i];
-  currentCol = clean.length;
-  renderRow(currentRow);
-
-  if(!isRowComplete(currentRow)){
-    setMessage("Ketik 5 huruf dulu sebelum submit.");
-    return;
-  }
-
-  const word = getRowWord(currentRow);
-
-  // Konsep K3: tebakan wajib istilah K3
-  if(!VALID_SET.has(word)){
-    setMessage("Tebakan harus istilah K3 (tidak ada di kamus K3).");
-    return;
-  }
-
-  const colors = evaluateGuess(word, answer.word);
-  colorHistory.push(colors);
-
-  // warnai tile
-  for(let c=0;c<COLS;c++){
-    const cell = cells[idx(currentRow,c)];
-    cell.classList.remove("g","y","b");
-    cell.classList.add(colors[c]);
-  }
-
-  updateKeyboardColors(word, colors);
-
-  shareBtn.disabled = colorHistory.length === 0;
-  shareTextEl.value = buildShareText(false);
-
-  if(word === answer.word){
-    setMessage("🎉 Benar! Kamu menang!");
-    endGame();
-    shareTextEl.value = buildShareText(true);
-    return;
-  }
-
-  currentRow++;
-  currentCol = 0;
-  inputEl.value = "";
-
-  if(currentRow >= ROWS){
-    setMessage(`😅 Kesempatan habis. Jawabannya: ${answer.word} (${answer.category})`);
-    endGame();
-    shareTextEl.value = buildShareText(true);
-    return;
-  }
-
-  setMessage(`Sisa percobaan: ${ROWS - currentRow}`);
-}
-
-function endGame(){
-  gameOver = true;
-  submitBtn.disabled = true;
-  inputEl.disabled = true;
-}
-
-/* Share */
+/* ===== Share ===== */
 function buildShareText(isFinal){
   const mapEmoji = { g:"🟩", y:"🟨", b:"⬜" };
   const tries = colorHistory.length;
   const score = isFinal ? `${tries}/${ROWS}` : `${tries}/${ROWS} (sementara)`;
 
-  let out = `KATGA K3 ${score}\nKategori: ${answer?.category || "-"}\n`;
+  let out = `KATGA K3 ${score}\n`;
   for(const row of colorHistory){
     out += row.map(x => mapEmoji[x] || "⬜").join("") + "\n";
   }
@@ -315,15 +293,90 @@ async function handleShare(){
   const text = buildShareText(true);
   shareTextEl.value = text;
   const ok = await copyToClipboard(text);
-  setMessage(ok ? "✅ Hasil disalin ke clipboard!" : "❌ Gagal copy otomatis. Salin manual.");
+  setMessage(ok ? "✅ Hasil disalin!" : "❌ Gagal copy otomatis. Salin manual.");
 }
 
-/* Reset */
+/* ===== Submit ===== */
+function submitRow(){
+  if(!wordsReady){
+    setMessage("Kamus belum siap / file data belum terbaca.");
+    return;
+  }
+  if(gameOver || currentRow>=ROWS) return;
+
+  // sinkron input (mobile)
+  const clean = clampGuessString(inputEl.value);
+  guesses[currentRow] = Array(COLS).fill("");
+  for(let i=0;i<clean.length;i++) guesses[currentRow][i] = clean[i];
+  currentCol = clean.length;
+
+  // render row aktif
+  for(let c=0;c<COLS;c++){
+    cells[idx(currentRow,c)].textContent = guesses[currentRow][c] || "";
+  }
+
+  if(!isRowComplete(currentRow)){
+    setMessage("Ketik 5 huruf dulu sebelum submit.");
+    return;
+  }
+
+  const word = getRowWord(currentRow);
+
+  // Mode kamus: harus ada di valid list
+  if(!VALID_SET.has(word)){
+    setMessage("Kata tidak ada di kamus K3.");
+    return;
+  }
+
+  const colors = evaluateGuess(word, answer.word);
+  colorHistory.push(colors);
+
+  // warnai tile row ini
+  for(let c=0;c<COLS;c++){
+    const cell = cells[idx(currentRow,c)];
+    cell.classList.remove("g","y","b");
+    cell.classList.add(colors[c]);
+  }
+
+  updateKeyboardColors(word, colors);
+
+  shareBtn.disabled = colorHistory.length === 0;
+  shareTextEl.value = buildShareText(false);
+
+  if(word === answer.word){
+    setMessage("🎉 Benar! Kamu menang!");
+    endGame();
+    shareTextEl.value = buildShareText(true);
+    openMeaningModal(answer.word, answer.meaning);
+    return;
+  }
+
+  currentRow++;
+  currentCol = 0;
+  inputEl.value = "";
+
+  if(currentRow >= ROWS){
+    setMessage(`😅 Kesempatan habis. Jawabannya: ${answer.word}`);
+    endGame();
+    shareTextEl.value = buildShareText(true);
+    return;
+  }
+
+  setMessage(`Sisa percobaan: ${ROWS - currentRow}`);
+}
+
+function endGame(){
+  gameOver = true;
+  submitBtn.disabled = true;
+  inputEl.disabled = true;
+}
+
+/* ===== Reset ===== */
 function resetGame(){
   if(!wordsReady) return;
 
-  answer = pickRandomAnswer(ANSWERS);
-  categoryEl.textContent = answer.category || "-";
+  // ganti jawaban (random non-repeat via bag)
+  pickNextAnswer();
 
   currentRow = 0;
   currentCol = 0;
@@ -331,19 +384,19 @@ function resetGame(){
   guesses = Array.from({ length: ROWS }, () => Array(COLS).fill(""));
   colorHistory = [];
 
-  // reset UI
   submitBtn.disabled = false;
   inputEl.disabled = false;
   inputEl.value = "";
   shareBtn.disabled = true;
   shareTextEl.value = "";
 
+  // reset keyboard colors
   buildBoard();
   buildKeyboard();
-  setMessage("Reset. Tebak lagi!");
+  setMessage("Game baru. Tebak lagi!");
 }
 
-/* Event */
+/* ===== Events ===== */
 document.addEventListener("keydown", (e) => {
   if(gameOver) return;
 
@@ -358,14 +411,17 @@ inputEl.addEventListener("input", () => {
   guesses[currentRow] = Array(COLS).fill("");
   for(let i=0;i<clean.length;i++) guesses[currentRow][i] = clean[i];
   currentCol = clean.length;
-  renderRow(currentRow);
+
+  for(let c=0;c<COLS;c++){
+    cells[idx(currentRow,c)].textContent = guesses[currentRow][c] || "";
+  }
 });
 
 submitBtn.addEventListener("click", submitRow);
 resetBtn.addEventListener("click", resetGame);
 shareBtn.addEventListener("click", handleShare);
 
-/* Init */
+/* ===== Init ===== */
 (async function init(){
   buildBoard();
   buildKeyboard();
@@ -375,26 +431,6 @@ shareBtn.addEventListener("click", handleShare);
     await loadK3Words();
   }catch(err){
     console.error(err);
-    setMessage("❌ Gagal memuat data K3. Pastikan data/k3-words.json ada & path benar.");
+    setMessage("❌ Gagal memuat data. Pastikan file ada di /data/k3-words.json");
   }
 })();
-
-function openMeaningModal(word, meaning){
-  modalWordEl.textContent = word;
-  modalMeaningEl.textContent = meaning || "Belum ada definisi untuk kata ini.";
-  meaningModal.classList.add("show");
-  meaningModal.setAttribute("aria-hidden", "false");
-}
-
-function closeMeaningModal(){
-  meaningModal.classList.remove("show");
-  meaningModal.setAttribute("aria-hidden", "true");
-}
-
-closeModalBtn.addEventListener("click", closeMeaningModal);
-meaningModal.addEventListener("click", (e) => {
-  if(e.target === meaningModal) closeMeaningModal(); // klik backdrop untuk tutup
-});
-document.addEventListener("keydown", (e) => {
-  if(e.key === "Escape") closeMeaningModal();
-});
