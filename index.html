@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KATGA K3</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <header class="header">
+      <h1>KATGA K3</h1>
+      <p class="sub">
+        Tebak <b>5 huruf</b> istilah K3. Ketik A–Z / klik keyboard.
+        <b>Enter</b> untuk submit, <b>⌫</b> untuk hapus.
+      </p>
+      <p class="hint">Kategori (hint): <b id="category">-</b></p>
+    </header>
+
+    <section class="game">
+      <div id="board" class="board" aria-label="Papan permainan"></div>
+
+      <div id="keyboard" class="keyboard" aria-label="Keyboard virtual"></div>
+
+      <div class="controls">
+        <div class="row">
+          <input
+            id="guess"
+            class="input"
+            type="text"
+            inputmode="text"
+            autocomplete="off"
+            maxlength="5"
+            placeholder="(Opsional) Ketik 5 huruf"
+          />
+          <button id="submit" class="btn primary">Coba</button>
+          <button id="reset" class="btn">Reset</button>
+          <button id="share" class="btn" disabled>Copy Hasil</button>
+        </div>
+
+        <p id="message" class="message" role="status" aria-live="polite"></p>
+      </div>
+
+      <textarea id="shareText" class="shareText" readonly
+        placeholder="Hasil emoji akan muncul di sini setelah ada tebakan..."></textarea>
+    </section>
+
+    <footer class="footer">
+      <small>Mode K3: tebakan dan jawaban harus istilah K3.</small>
+    </footer>
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

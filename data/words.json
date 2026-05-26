@@ -1,0 +1,18 @@
+{
+  "answers": [
+    { "word": "ERGON", "category": "Ergonomi" },
+    { "word": "BAHAY", "category": "Hazard (Bahaya)" },
+    { "word": "RISIK", "category": "Risk (Risiko)" },
+    { "word": "APARX", "category": "Kebakaran (APAR)" },
+    { "word": "SOPXX", "category": "Prosedur (SOP)" },
+    { "word": "HELME", "category": "APD (Helm)" },
+    { "word": "MASKR", "category": "APD (Masker)" },
+    { "word": "SARUN", "category": "APD (Sarung)" },
+    { "word": "SEPAT", "category": "APD (Sepatu)" },
+    { "word": "EVAKU", "category": "Tanggap Darurat" }
+  ],
+  "validGuesses": [
+    "ERGON","BAHAY","RISIK","APARX","SOPXX","HELME","MASKR","SARUN","SEPAT","EVAKU",
+    "AAMAN","JALUR","RAPAT","RAPIN","SDSXX","KIMIA","LABEL","PAPAR","CEGAH","AMANK"
+  ]
+}
