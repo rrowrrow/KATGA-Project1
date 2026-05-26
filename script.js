@@ -75,7 +75,7 @@ document.addEventListener("keydown", (e) => {
 /* ===== Load JSON ===== */
 async function loadK3Words(){
   setMessage("Memuat kamus K3...");
-  const res = await fetch("/k3-words.json", { cache: "no-store" });
+  const res = await fetch("/data/k3-words.json", { cache: "no-store" });
   if(!res.ok) throw new Error("Gagal load /data/k3-words.json: " + res.status);
 
   const data = await res.json();
