@@ -319,7 +319,7 @@ async function handleShare(){
 function resetGame(){
   if(!wordsReady) return;
 
-  answer = pickDailyAnswer(ANSWERS);
+  answer = pickRandomAnswer(ANSWERS);
   categoryEl.textContent = answer.category || "-";
 
   currentRow = 0;
