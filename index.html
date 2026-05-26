@@ -11,8 +11,8 @@
     <header class="header">
       <h1>KATGA K3</h1>
       <p class="sub">
-        Tebak <b>5 huruf</b> istilah K3. Ketik A–Z / klik keyboard.
-        <b>Enter</b> untuk submit, <b>⌫</b> untuk hapus.
+        Tebak <b>5 huruf</b> istilah terkait K3. Tidak ada hint.
+        <b>Enter</b> untuk submit, <b>⌫</b> hapus.
       </p>
     </header>
 
@@ -27,10 +27,9 @@
             id="guess"
             class="input"
             type="text"
-            inputmode="text"
-            autocomplete="off"
             maxlength="5"
-            placeholder="(Opsional) Ketik 5 huruf"
+            autocomplete="off"
+            placeholder="Ketik 5 huruf"
           />
           <button id="submit" class="btn primary">Coba</button>
           <button id="reset" class="btn">Reset</button>
@@ -42,21 +41,22 @@
 
       <textarea id="shareText" class="shareText" readonly
         placeholder="Hasil emoji akan muncul di sini setelah ada tebakan..."></textarea>
-      <!-- Modal Makna Kata -->
-<div id="meaningModal" class="modal" aria-hidden="true">
-  <div class="modalContent" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <h2 id="modalTitle">Makna Kata</h2>
-    <p class="modalWord">Kata: <b id="modalWord">-</b></p>
-    <p id="modalMeaning" class="modalMeaning">-</p>
-    <button id="closeModal" class="btn primary">Tutup</button>
-  </div>
-</div>
     </section>
 
     <footer class="footer">
-      <small>Mode K3: tebakan dan jawaban harus istilah K3.</small>
+      <small>Mode K3: tebakan harus ada di kamus.</small>
     </footer>
   </main>
+
+  <!-- Modal Makna Kata (muncul saat menang) -->
+  <div id="meaningModal" class="modal" aria-hidden="true">
+    <div class="modalContent" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h2 id="modalTitle">Jawaban Benar ✅</h2>
+      <p class="modalWord">Kata: <b id="modalWord">-</b></p>
+      <p id="modalMeaning" class="modalMeaning">-</p>
+      <button id="closeModal" class="btn primary">Tutup</button>
+    </div>
+  </div>
 
   <script src="js/script.js"></script>
 </body>
