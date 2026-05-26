@@ -13,6 +13,10 @@ const shareBtn = document.getElementById("share");
 const messageEl = document.getElementById("message");
 const shareTextEl = document.getElementById("shareText");
 const categoryEl = document.getElementById("category");
+const meaningModal = document.getElementById("meaningModal");
+const modalWordEl = document.getElementById("modalWord");
+const modalMeaningEl = document.getElementById("modalMeaning");
+const closeModalBtn = document.getElementById("closeModal");
 
 /* Data */
 let wordsReady = false;
@@ -374,3 +378,23 @@ shareBtn.addEventListener("click", handleShare);
     setMessage("❌ Gagal memuat data K3. Pastikan data/k3-words.json ada & path benar.");
   }
 })();
+
+function openMeaningModal(word, meaning){
+  modalWordEl.textContent = word;
+  modalMeaningEl.textContent = meaning || "Belum ada definisi untuk kata ini.";
+  meaningModal.classList.add("show");
+  meaningModal.setAttribute("aria-hidden", "false");
+}
+
+function closeMeaningModal(){
+  meaningModal.classList.remove("show");
+  meaningModal.setAttribute("aria-hidden", "true");
+}
+
+closeModalBtn.addEventListener("click", closeMeaningModal);
+meaningModal.addEventListener("click", (e) => {
+  if(e.target === meaningModal) closeMeaningModal(); // klik backdrop untuk tutup
+});
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape") closeMeaningModal();
+});
