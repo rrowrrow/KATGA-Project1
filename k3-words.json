@@ -1,20 +1,32 @@
 {
   "answers": [
-    { "word": "RISIK", "meaning": "Risiko: peluang terjadinya bahaya dan seberapa besar dampaknya." },
-    { "word": "BAHAY", "meaning": "Bahaya (hazard): sumber/keadaan yang berpotensi menimbulkan cedera atau kerusakan." },
-    { "word": "ERGON", "meaning": "Ergonomi: penyesuaian kerja/alat dengan kemampuan tubuh agar aman dan nyaman." },
-    { "word": "ALARM", "meaning": "Alarm: sistem peringatan dini untuk memberi tanda bahaya/darurat." },
-    { "word": "KIMIA", "meaning": "Kimia: bahaya terkait bahan kimia (racun/korosif/iritan) dan pengendaliannya." },
-    { "word": "PANAS", "meaning": "Panas: paparan suhu tinggi yang bisa menyebabkan heat stress/luka bakar." },
-    { "word": "TEKAN", "meaning": "Tekan: tekanan (pressure) yang jika berlebih bisa memicu kebocoran/ledakan." },
-    { "word": "GETAR", "meaning": "Getar: vibrasi yang berisiko gangguan otot/saraf bila paparan tinggi." },
-    { "word": "CEGAH", "meaning": "Cegah: tindakan pencegahan agar insiden/kecelakaan tidak terjadi." },
-    { "word": "JALUR", "meaning": "Jalur: jalur evakuasi untuk keluar aman saat keadaan darurat." },
-    { "word": "LUKAS", "meaning": "Luka: cedera pada tubuh akibat insiden/kecelakaan kerja." },
-    { "word": "LABEL", "meaning": "Label: penandaan informasi bahaya pada bahan/alat untuk mencegah salah penanganan." }
+    { "word": "RISIK", "meaning": "Risiko: kemungkinan terjadinya bahaya dan besarnya dampak yang mungkin timbul." },
+    { "word": "BAHAY", "meaning": "Bahaya (hazard): sumber/kondisi yang berpotensi menyebabkan cedera, sakit, atau kerusakan." },
+    { "word": "ERGON", "meaning": "Ergonomi: penyesuaian pekerjaan & alat agar sesuai kemampuan tubuh (mencegah cedera)." },
+    { "word": "AUDIT", "meaning": "Audit K3: pemeriksaan sistem/aktivitas untuk memastikan kepatuhan dan menemukan perbaikan." },
+    { "word": "ALARM", "meaning": "Alarm: sistem peringatan dini untuk kondisi darurat (kebakaran, gas, dll)." },
+    { "word": "KIMIA", "meaning": "Bahaya kimia: risiko dari zat kimia (iritan, racun, korosif) dan cara pengendaliannya." },
+    { "word": "RACUN", "meaning": "Racun: zat yang dapat menimbulkan keracunan bila terhirup/tertelan/terserap." },
+    { "word": "KOROS", "meaning": "Korosif: sifat bahan yang dapat merusak kulit/logam; butuh APD & penanganan aman." },
+    { "word": "PANAS", "meaning": "Panas: paparan suhu tinggi dapat memicu heat stress dan luka bakar." },
+    { "word": "TEKAN", "meaning": "Tekan: bahaya tekanan tinggi (tabung/pipe) berisiko kebocoran/ledakan." },
+    { "word": "GETAR", "meaning": "Getar: paparan vibrasi berlebih dapat memicu gangguan saraf/otot (mis. HAVS)." },
+    { "word": "PAPAR", "meaning": "Papar: exposure; kontak dengan bahaya (debu/kimia/bising) melalui hirup/sentuh." },
+    { "word": "CEGAH", "meaning": "Cegah: tindakan pencegahan (kontrol) untuk mengurangi risiko sebelum insiden terjadi." },
+    { "word": "JATUH", "meaning": "Jatuh: salah satu risiko utama (work at height); butuh proteksi jatuh & prosedur." },
+    { "word": "LICIN", "meaning": "Licin: kondisi tidak aman; dapat menyebabkan slip/trip/fall, perlu housekeeping." },
+    { "word": "SPILL", "meaning": "Spill: tumpahan bahan (kimia/oli) yang harus segera ditangani sesuai prosedur." },
+    { "word": "TOXIC", "meaning": "Toxic: beracun; dapat menyebabkan efek kesehatan akut/kronis, perlu kontrol paparan." },
+    { "word": "GUARD", "meaning": "Guard: pelindung mesin untuk mencegah kontak dengan bagian bergerak." },
+    { "word": "LABEL", "meaning": "Label: informasi bahaya pada bahan/alat (piktogram/peringatan) agar penanganan aman." },
+    { "word": "JALUR", "meaning": "Jalur: jalur evakuasi harus jelas, tidak terhalang, dan dikenal pekerja." }
   ],
   "validGuesses": [
-    "RISIK","BAHAY","ERGON","ALARM","KIMIA","PANAS","TEKAN","GETAR","CEGAH","JALUR","LUKAS","LABEL",
-    "AMANX","DARUR","PAPAR","RAWAT","BISING","RADIA"
+    "RISIK","BAHAY","ERGON","AUDIT","ALARM","KIMIA","RACUN","KOROS","PANAS","TEKAN",
+    "GETAR","PAPAR","CEGAH","JATUH","LICIN","SPILL","TOXIC","GUARD","LABEL","JALUR",
+
+    "SMOKE","FUMES","CABLE","DRAIN","FIRST","AWARE","CHECK","CLEAN","SAFER","HEALT",
+    "RISKS","HARMF","SHIFT","NOISE"
   ]
 }
+``
