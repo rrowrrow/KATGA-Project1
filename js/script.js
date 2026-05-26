@@ -75,7 +75,6 @@ async function loadK3Words(){
   if(ANSWERS.length === 0) throw new Error("Jawaban kosong setelah normalisasi.");
 
   answer = pickRandomAnswer(ANSWERS); // daily
-  categoryEl.textContent = answer.category || "-";
 
   wordsReady = true;
   setMessage("Kamus siap. Tebak istilah K3!");
