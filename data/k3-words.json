@@ -21,7 +21,6 @@
     { "word": "LABEL", "meaning": "Label: informasi bahaya pada bahan/alat (piktogram/peringatan) agar penanganan aman." },
     { "word": "JALUR", "meaning": "Jalur: jalur evakuasi harus jelas, tidak terhalang, dan dikenal pekerja." }
   ],
-{
   "validGuesses": [
     "ABADI","ABANG","ABJAD","ABSEN","ABSES","ABSIS","ACARA","ACANG","ACUNG",
     "ADANG","ADATI","ADING","ADISI","ADMIN","ADUAN","AFDAL","AFIAT","AFIKS",
@@ -74,7 +73,5 @@
     "TUNGG","TURUN","UBAHX","ULANG","UMUMX","UNDUR","UNJUK","UNTUK","URBAN",
     "USANG","USULX","UTAMA","UTARA","UTASX","VACUM","WADAH","WAJAH","WAKTU",
     "WARNA","WASPA","WASIT","WATAK","WAWAN","WEWEN","WISMA","YAKIN","ZAMAN"
-  ]
-}
   ]
 }
