@@ -130,7 +130,7 @@ async function init() {
 
     const today = new Date();
 
-state.todayKey = "2026-06-03";
+const today = new Date();
 console.log("todayKey =", state.todayKey);    
 
 els.dateLabel.textContent =
