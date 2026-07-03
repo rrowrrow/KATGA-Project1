@@ -145,10 +145,23 @@ async function init() {
       throw new Error("Word harian tidak valid");
     }
 
-    const validByLen = data.validGuessesByLength || {};
-    const validList = validByLen[String(state.answer.length)] || [];
-    state.validGuessSet = new Set(validList.map(normalizeWord).filter(Boolean));
-    state.validGuessSet.add(state.answer);
+const wordsResponse = await fetch(
+  `${WORD_PATH}words-${state.answer.length}.json`
+);
+
+if (!wordsResponse.ok) {
+  throw new Error(
+    `Bank kata ${state.answer.length} huruf tidak ditemukan`
+  );
+}
+
+const validList = await wordsResponse.json();
+
+state.validGuessSet = new Set(
+  validList.map(normalizeWord).filter(Boolean)
+);
+
+state.validGuessSet.add(state.answer);
 
     applyTodayDataToUI();
     restoreProgress();
