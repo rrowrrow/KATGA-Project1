@@ -135,7 +135,7 @@ async function init() {
       year: "numeric"
     });
 
-    state.todayData = getTodayWord(data, state.todayKey, today);
+    state.todayData = getTodayWord(data, state.todayKey);
     if (!state.todayData || !state.todayData.word) {
       throw new Error("Kata harian tidak ditemukan di data.json");
     }
@@ -181,18 +181,20 @@ state.validGuessSet.add(state.answer);
   }
 }
 
-function getTodayWord(config, todayKey, todayDate) {
-  if (Array.isArray(config.manualWords)) {
-    const exact = config.manualWords.find((item) => item.date === todayKey);
-    if (exact) return exact;
+function getTodayWord(config, todayKey) {
+
+  if (Array.isArray(config.dailyWords)) {
+
+    const exact = config.dailyWords.find(
+      item => item.date === todayKey
+    );
+
+    if (exact) {
+      return exact;
+    }
   }
 
-  if (Array.isArray(config.fallbackWords) && config.fallbackWords.length > 0) {
-    const index = dayOfYear(todayDate) % config.fallbackWords.length;
-    return config.fallbackWords[index];
-  }
-
-  return null;
+  return config.defaultWord || null;
 }
 
 function applyTodayDataToUI() {
