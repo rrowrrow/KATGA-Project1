@@ -3,61 +3,131 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KATGA K3</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="theme-color" content="#00529b" />
+  <title>KATGA - Kata-Kata K3</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="wrap">
-    <header class="header">
-      <h1>KATGA K3</h1>
-      <p class="sub">
-        Tebak <b>5 huruf</b> istilah terkait K3. Tidak ada hint.
-        <b>Enter</b> untuk submit, <b>⌫</b> hapus.
-      </p>
-    </header>
-
-    <section class="game">
-      <div id="board" class="board" aria-label="Papan permainan"></div>
-
-      <div id="keyboard" class="keyboard" aria-label="Keyboard virtual"></div>
-
-      <div class="controls">
-        <div class="row">
-          <input
-            id="guess"
-            class="input"
-            type="text"
-            maxlength="5"
-            autocomplete="off"
-            placeholder="Ketik 5 huruf"
-          />
-          <button id="submit" class="btn primary">Coba</button>
-          <button id="reset" class="btn">Reset</button>
-          <button id="share" class="btn" disabled>Copy Hasil</button>
-        </div>
-
-        <p id="message" class="message" role="status" aria-live="polite"></p>
+  <div class="app-shell">
+    <header class="hero card">
+      <div class="hero-text">
+        <p class="eyebrow">HSSE Learning Game</p>
+        <h1>KATGA</h1>
+        <p class="subtitle">Kata-Kata K3 Harian</p>
       </div>
 
-      <textarea id="shareText" class="shareText" readonly
-        placeholder="Hasil emoji akan muncul di sini setelah ada tebakan..."></textarea>
+      <div class="hero-actions">
+        <button id="helpBtn" class="ghost-btn" type="button">Panduan</button>
+        <button id="shareBtn" class="primary-btn" type="button">Share</button>
+      </div>
+    </header>
+
+    <section class="stats card">
+      <div class="stat-item">
+        <span>Streak</span>
+        <strong id="streakCount">0</strong>
+      </div>
+      <div class="stat-item">
+        <span>Best</span>
+        <strong id="bestCount">0</strong>
+      </div>
+      <div class="stat-item">
+        <span>Status</span>
+        <strong id="statusLabel">Memuat</strong>
+      </div>
+      <div class="stat-item">
+        <span>Tanggal</span>
+        <strong id="dateLabel">-</strong>
+      </div>
     </section>
 
-    <footer class="footer">
-      <small>Mode K3: tebakan harus ada di kamus.</small>
-    </footer>
-  </main>
+    <section id="readerSection" class="card section">
+      <div class="section-header">
+        <div>
+          <p class="section-kicker">Langkah 1</p>
+          <h2>Pesan Keselamatan Harian</h2>
+        </div>
+        <span class="badge">Wajib dibaca</span>
+      </div>
 
-  <!-- Modal Makna Kata (muncul saat menang) -->
-  <div id="meaningModal" class="modal" aria-hidden="true">
-    <div class="modalContent" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <h2 id="modalTitle">Jawaban Benar ✅</h2>
-      <p class="modalWord">Kata: <b id="modalWord">-</b></p>
-      <p id="modalMeaning" class="modalMeaning">-</p>
-      <button id="closeModal" class="btn primary">Tutup</button>
+      <div class="message-meta">
+        <div><strong id="messageTitle">Memuat pesan...</strong></div>
+        <div id="messageCategory" class="message-category">-</div>
+      </div>
+
+      <div id="messageScrollBox" class="message-scroll">
+        <p id="messageFullText">Sedang mengambil pesan harian...</p>
+      </div>
+
+      <div class="reader-controls">
+        <label class="checkbox-row">
+          <input type="checkbox" id="confirmRead" disabled />
+          <span>Saya sudah membaca pesan keselamatan harian</span>
+        </label>
+
+        <button id="startGameBtn" class="primary-btn" type="button" disabled>
+          Mulai Game
+        </button>
+      </div>
+
+      <p id="readerHint" class="helper-text">
+        Scroll sampai bawah untuk mengaktifkan konfirmasi baca.
+      </p>
+    </section>
+
+    <section id="gameSection" class="card section hidden">
+      <div class="section-header">
+        <div>
+          <p class="section-kicker">Langkah 2</p>
+          <h2>Tebak Kata Kunci Hari Ini</h2>
+        </div>
+        <span id="wordLengthBadge" class="badge">0 huruf</span>
+      </div>
+
+      <p id="gameHint" class="helper-text">Hint sedang dimuat...</p>
+      <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+
+      <div class="board-wrap">
+        <div id="board" class="board"></div>
+      </div>
+
+      <div class="input-wrap">
+        <input
+          id="guessInput"
+          type="text"
+          placeholder="Ketik tebakan..."
+          autocomplete="off"
+          spellcheck="false"
+          maxlength="12"
+        />
+        <div class="input-buttons">
+          <button id="backspaceBtn" class="ghost-btn" type="button">Hapus</button>
+          <button id="submitBtn" class="primary-btn" type="button">Submit</button>
+        </div>
+      </div>
+
+      <div id="keyboard" class="keyboard"></div>
+    </section>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalOverlay" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div>
+          <p id="modalEyebrow" class="modal-eyebrow">Info</p>
+          <h3 id="modalTitle">Judul</h3>
+        </div>
+        <button id="modalCloseBtn" class="icon-btn" type="button" aria-label="Tutup">×</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+      <div id="modalActions" class="modal-actions"></div>
     </div>
   </div>
 
-  <script src="js/script.js"></script>
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
