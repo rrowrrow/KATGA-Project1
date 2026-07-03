@@ -131,6 +131,7 @@ async function init() {
     const today = new Date();
 
 state.todayKey = formatDate(today);
+console.log("todayKey =", state.todayKey);    
 
 els.dateLabel.textContent =
   today.toLocaleDateString("id-ID", {
@@ -142,7 +143,11 @@ els.dateLabel.textContent =
 let todayData = null;
 
 try {
-
+  
+console.log(
+  "Mencari file :",
+  `${DAILY_PATH}${state.todayKey}.json`
+);
   const dailyResponse =
     await fetch(
       `${DAILY_PATH}${state.todayKey}.json`,
