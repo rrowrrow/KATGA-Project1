@@ -54,22 +54,5 @@
 
       "dailySafetyMessage": "Jangan memulai pekerjaan berisiko tanpa izin yang sah."
     }
-  ],
-
-  "validGuessesByLength": {
-    "3": [
-      "APD",
-      "LAS",
-      "BOR",
-      "REM"
-    ],
-    "9": [
-    "PEKERJAAN",
-    "KEPATUHAN",
-    "INSPEKTUR",
-    "KESEHATAN",
-    "KAPASITAS",
-    "SPESIFIK"
-    ]
-  }
-}  
+  ]
+  
