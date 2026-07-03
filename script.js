@@ -119,7 +119,7 @@ function bindEvents() {
 
 async function init() {
   try {
-    const res = await fetch(DATA_URL, { cache: "no-store" });
+    const res = await fetch(CONFIG_URL, { cache: "no-store" });
     if (!res.ok) {
       throw new Error(`File ${DATA_URL} tidak bisa dibuka`);
     }
