@@ -1,5 +1,6 @@
 const STORAGE_KEY = "katga_beta_v1";
 const DATA_URL = "./data/daily-k3.json";
+const WORD_PATH = "./data/";
 
 const state = {
   config: null,
