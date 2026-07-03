@@ -187,7 +187,14 @@ console.log(
 if (!todayData) {
   todayData = data.defaultWord;
 }
+
 state.todayData = todayData;
+
+if (!state.todayData || !state.todayData.word) {
+  throw new Error("Kata harian tidak ditemukan");
+}
+
+state.answer = normalizeWord(state.todayData.word);
 
 
     els.dateLabel.textContent = today.toLocaleDateString("id-ID", {
