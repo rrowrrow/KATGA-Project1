@@ -121,7 +121,7 @@ async function init() {
   try {
     const res = await fetch(CONFIG_URL, { cache: "no-store" });
     if (!res.ok) {
-      throw new Error(`File ${DATA_URL} tidak bisa dibuka`);
+      throw new Error(`File ${CONFIG_URL} tidak bisa dibuka`);
     }
 
     const data = await res.json();
