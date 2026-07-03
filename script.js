@@ -129,7 +129,36 @@ async function init() {
     state.maxAttempts = Number.isInteger(data.maxGuesses) ? data.maxGuesses : 6;
 
     const today = new Date();
-    state.todayKey = formatDate(today);
+
+state.todayKey = formatDate(today);
+
+els.dateLabel.textContent =
+  today.toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  });
+
+let todayData = null;
+
+try {
+
+  const dailyResponse =
+    await fetch(
+      `${DAILY_PATH}${state.todayKey}.json`,
+      { cache: "no-store" }
+    );
+  if (dailyResponse.ok) {
+    todayData = await dailyResponse.json();
+  }
+} catch (error) {
+  console.warn("File harian tidak ditemukan");
+}
+if (!todayData) {
+  todayData = data.defaultWord;
+}
+state.todayData = todayData;
+
     els.dateLabel.textContent = today.toLocaleDateString("id-ID", {
       day: "2-digit",
       month: "long",
