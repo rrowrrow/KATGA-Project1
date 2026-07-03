@@ -1,0 +1,20 @@
+{
+  "maxGuesses": 6,
+  "showDailyMessageOnLoad": true,
+
+  "defaultWord": {
+    "word": "AMAN",
+    "category": "Keselamatan",
+    "hint": "Tujuan utama dalam bekerja",
+
+    "message": "Selalu utamakan keselamatan dalam setiap pekerjaan.",
+
+    "fullMessage": "Keselamatan adalah prioritas utama dalam setiap aktivitas kerja dan pengambilan keputusan di lapangan.",
+
+    "meaning": "Aman berarti bebas dari potensi bahaya yang tidak terkendali.",
+
+    "k3Education": "Keselamatan kerja bertujuan mencegah kecelakaan dan menjaga pekerja tetap sehat serta selamat.",
+
+    "dailySafetyMessage": "Bekerja aman adalah prioritas utama."
+  }
+}
