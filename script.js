@@ -197,11 +197,6 @@ state.todayData = todayData;
     });
 
 
-    state.todayData = getTodayWord(data, state.todayKey);
-    if (!state.todayData || !state.todayData.word) {
-      throw new Error("Kata harian tidak ditemukan di data.json");
-    }
-
 
     state.answer = normalizeWord(state.todayData.word);
     if (!state.answer) {
