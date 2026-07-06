@@ -78,17 +78,33 @@ function mapElements() {
 
 
 function bindEvents() {
-  els.messageScrollBox.addEventListener("scroll", handleMessageScroll);
-  els.confirmRead.addEventListener("change", updateStartButtonState);
-  els.startGameBtn.addEventListener("click", startGame);
 
+  els.messageScrollBox.addEventListener(
+    "scroll",
+    handleMessageScroll
+  );
 
-  els.guessInput.addEventListener("input", handleInputChange);
-  els.guessInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      submitGuess();
+  els.confirmRead.addEventListener(
+    "change",
+    updateStartButtonState
+  );
+
+  els.startGameBtn.addEventListener(
+    "click",
+    startGame
+  );
+
+  els.board.addEventListener("click", () => {
+
+    if (
+      state.locked ||
+      !state.hasReadMessage
+    ) {
+      return;
     }
+
+    els.guessInput.focus();
+
   });
 
 
