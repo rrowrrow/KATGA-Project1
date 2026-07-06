@@ -318,26 +318,34 @@ function updateStartButtonState() {
 
 
 function startGame() {
+
   state.hasReadMessage = true;
+
   els.readerSection.classList.add("hidden");
   els.gameSection.classList.remove("hidden");
-  els.statusLabel.textContent = state.locked ? "Terkunci" : "Main";
-  els.guessInput.focus();
+
+  syncGameState();
+
   setTimeout(() => {
 
-  els.guessInput.scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
-}, 300);
-  setFeedback("Mulai tebak kata kunci hari ini.", false);
+    els.guessInput.focus();
 
+    console.log(
+      "disabled:",
+      els.guessInput.disabled
+    );
 
-  const stored = readStorage();
-  ensureTodayStorage(stored);
-  stored.daily[state.todayKey].hasReadMessage = true;
-  saveStorage(stored);
+  }, 300);
+
+  els.statusLabel.textContent =
+    state.locked ? "Terkunci" : "Main";
+
+  setFeedback(
+    "Mulai tebak kata kunci hari ini.",
+    false
+  );
 }
+
 
 
 function createBoard() {
