@@ -323,6 +323,13 @@ function startGame() {
   els.gameSection.classList.remove("hidden");
   els.statusLabel.textContent = state.locked ? "Terkunci" : "Main";
   els.guessInput.focus();
+  setTimeout(() => {
+
+  els.guessInput.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+}, 300);
   setFeedback("Mulai tebak kata kunci hari ini.", false);
 
 
