@@ -1211,26 +1211,4 @@ async function getShareFile() {
 
 }
 
-async function getShareFile() {
 
-  const blob =
-    await createShareImage();
-
-  return new File(
-    [blob],
-    "katga-hsse.png",
-    {
-      type: "image/png"
-    }
-  );
-}
-async function testShareImage() {
-
-  const canvas =
-    await createShareImage();
-
-  document.body.appendChild(
-    canvas
-  );
-
-}
