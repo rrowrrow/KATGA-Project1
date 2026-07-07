@@ -1110,6 +1110,7 @@ function prepareShareCard() {
   ).textContent =
     `${state.attempts.length}/${state.maxAttempts}`;
 }
+
 async function createShareImage() {
 
   prepareShareCard();
@@ -1127,21 +1128,9 @@ async function createShareImage() {
       }
     );
 
-  return new Promise(
-    (resolve) => {
-
-      canvas.toBlob(
-        (blob) => {
-
-          resolve(blob);
-
-        },
-        "image/png"
-      );
-
-    }
-  );
+  return canvas;
 }
+
 async function getShareFile() {
 
   const blob =
@@ -1163,4 +1152,5 @@ async function testShareImage() {
   document.body.appendChild(
     canvas
   );
+
 }
