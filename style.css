@@ -574,7 +574,7 @@ h1 {
     min-height: 30px;
   }
     
-  .share-card {
+ .share-card {
 
   position: fixed;
 
@@ -583,30 +583,34 @@ h1 {
 
   width: 1080px;
 
-  background: #ffffff;
+  background: white;
 
-  padding: 60px;
+  padding: 50px;
 
   color: #10233b;
 
   font-family: Arial, Helvetica, sans-serif;
+
+  border-radius: 24px;
 }
 
 .share-title {
 
-  font-size: 40px;
-  font-weight: bold;
+  font-size: 42px;
+  font-weight: 700;
 
   color: #00529b;
 
-  margin-bottom: 24px;
+  margin-bottom: 30px;
 }
 
-.share-logo {
+#shareMessage {
 
-  font-size: 32px;
+  font-size: 20px;
 
-  margin-bottom: 30px;
+  line-height: 1.7;
+
+  white-space: pre-wrap;
 }
 
 .share-footer {
@@ -616,7 +620,9 @@ h1 {
   font-size: 28px;
 
   color: #00529b;
-}  
+
+  font-weight: 700;
 }
+  }
   
 }
