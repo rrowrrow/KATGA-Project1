@@ -1110,3 +1110,48 @@ function prepareShareCard() {
   ).textContent =
     `${state.attempts.length}/${state.maxAttempts}`;
 }
+async function createShareImage() {
+
+  prepareShareCard();
+
+  const card =
+    document.getElementById(
+      "shareCard"
+    );
+
+  const canvas =
+    await html2canvas(
+      card,
+      {
+        scale: 2
+      }
+    );
+
+  return new Promise(
+    (resolve) => {
+
+      canvas.toBlob(
+        (blob) => {
+
+          resolve(blob);
+
+        },
+        "image/png"
+      );
+
+    }
+  );
+}
+async function getShareFile() {
+
+  const blob =
+    await createShareImage();
+
+  return new File(
+    [blob],
+    "katga-hsse.png",
+    {
+      type: "image/png"
+    }
+  );
+}
