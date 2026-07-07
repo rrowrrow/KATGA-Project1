@@ -1087,3 +1087,26 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+function prepareShareCard() {
+
+  document.getElementById(
+    "shareTitle"
+  ).textContent =
+    state.todayData.category || "";
+
+  document.getElementById(
+    "shareMessage"
+  ).textContent =
+    state.todayData.fullMessage || "";
+
+  document.getElementById(
+    "shareDate"
+  ).textContent =
+    state.todayKey;
+
+  document.getElementById(
+    "shareResult"
+  ).textContent =
+    `${state.attempts.length}/${state.maxAttempts}`;
+}
