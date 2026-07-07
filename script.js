@@ -836,36 +836,6 @@ async function shareResult(fromPopup) {
 
 }
 
-  const completeShare = async () => {
-    try {
-      if (navigator.share && !fromPopup) {
-        await navigator.share({
-          title: "KATGA",
-          text
-        });
-      } else if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        fallbackCopy(text);
-      }
-
-
-      state.hasSharedToday = true;
-      const storage = readStorage();
-      ensureTodayStorage(storage);
-      storage.daily[state.todayKey].hasShared = true;
-      saveStorage(storage);
-      showToast("Hasil berhasil dibagikan / disalin.");
-    } catch (err) {
-      console.error(err);
-      showToast("Gagal membagikan hasil.");
-    }
-  };
-
-
-  completeShare();
-}
-
 
 function buildShareText() {
 
