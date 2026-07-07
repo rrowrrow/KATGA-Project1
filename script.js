@@ -1155,3 +1155,12 @@ async function getShareFile() {
     }
   );
 }
+async function testShareImage() {
+
+  const canvas =
+    await createShareImage();
+
+  document.body.appendChild(
+    canvas
+  );
+}
