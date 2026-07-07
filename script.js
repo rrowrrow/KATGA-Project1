@@ -779,11 +779,62 @@ function closeModalAndContinue() {
 }
 
 
-function shareResult(fromPopup) {
+async function shareResult(fromPopup) {
+
   if (!state.attempts.length) {
-    showToast("Belum ada hasil untuk dibagikan.");
+
+    showToast(
+      "Belum ada hasil untuk dibagikan."
+    );
+
     return;
   }
+
+  try {
+
+    const file =
+      await getShareFile();
+
+    const text =
+      buildShareText();
+
+    if (
+      navigator.canShare &&
+      navigator.canShare({
+        files: [file]
+      })
+    ) {
+
+      await navigator.share({
+
+        title:
+          "KATGA - Kata Harian HSSE",
+
+        text,
+
+        files: [file]
+
+      });
+
+    } else {
+
+      showToast(
+        "Perangkat belum mendukung share gambar."
+      );
+
+    }
+
+  } catch (err) {
+
+    console.error(err);
+
+    showToast(
+      "Gagal membagikan hasil."
+    );
+
+  }
+
+}
 
 
   const text = buildShareText();
@@ -1129,6 +1180,35 @@ async function createShareImage() {
     );
 
   return canvas;
+}
+async function getShareFile() {
+
+  const canvas =
+    await createShareImage();
+
+  return new Promise(
+    (resolve) => {
+
+      canvas.toBlob(
+        (blob) => {
+
+          resolve(
+            new File(
+              [blob],
+              "katga-hsse.png",
+              {
+                type: "image/png"
+              }
+            )
+          );
+
+        },
+        "image/png"
+      );
+
+    }
+  );
+
 }
 
 async function getShareFile() {
