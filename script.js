@@ -836,10 +836,6 @@ async function shareResult(fromPopup) {
 
 }
 
-
-  const text = buildShareText();
-
-
   const completeShare = async () => {
     try {
       if (navigator.share && !fromPopup) {
