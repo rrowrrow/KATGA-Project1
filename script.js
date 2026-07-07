@@ -78,33 +78,17 @@ function mapElements() {
 
 
 function bindEvents() {
+  els.messageScrollBox.addEventListener("scroll", handleMessageScroll);
+  els.confirmRead.addEventListener("change", updateStartButtonState);
+  els.startGameBtn.addEventListener("click", startGame);
 
-  els.messageScrollBox.addEventListener(
-    "scroll",
-    handleMessageScroll
-  );
 
-  els.confirmRead.addEventListener(
-    "change",
-    updateStartButtonState
-  );
-
-  els.startGameBtn.addEventListener(
-    "click",
-    startGame
-  );
-
-  els.board.addEventListener("click", () => {
-
-    if (
-      state.locked ||
-      !state.hasReadMessage
-    ) {
-      return;
+  els.guessInput.addEventListener("input", handleInputChange);
+  els.guessInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      submitGuess();
     }
-
-    els.guessInput.focus();
-
   });
 
 
@@ -149,27 +133,21 @@ function bindEvents() {
       renderCurrentRow();
     }
   });
-function bindEvents() {
+els.board.addEventListener(
+  "click",
+  () => {
 
-  ...
-
-  els.board.addEventListener(
-    "click",
-    () => {
-
-      if (
-        state.locked ||
-        !state.hasReadMessage
-      ) {
-        return;
-      }
-
-      els.guessInput.focus();
-
+    if (
+      state.locked ||
+      !state.hasReadMessage
+    ) {
+      return;
     }
-  );
 
-}
+    els.guessInput.focus();
+
+  }
+);
 }
 
 
@@ -852,25 +830,23 @@ function buildShareText() {
         : state.attempts.length;
 
   const lines = state.attempts.map(
-    (attempt) =>
+    attempt =>
       attempt.evaluation
         .map(toEmoji)
         .join("")
   );
 
   return [
-    "🎯 KATGA - Kata Harian HSSE",
+    "📢 PESAN HARIAN HSSE",
     "",
-    `📅 ${state.todayKey}`,
-    `🏆 Hasil: ${score}/${state.maxAttempts}`,
-    "",
-    ...lines,
-    "",
-    "📢 Pesan Keselamatan:",
-    state.todayData.message || "",
+    state.todayData.fullMessage || "",
     "",
     "🌐 Mainkan KATGA:",
-    window.location.origin
+    "https://katga-beta1.vercel.app/",
+    `📅 ${state.todayKey}`,
+    `🏆 Hasil: ${score}/${state.maxAttempts}`,
+    ...lines,
+    "🎯 KATGA - Kata Harian HSSE"
   ].join("\n");
 
 }
@@ -1111,4 +1087,3 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
-
