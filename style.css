@@ -230,6 +230,7 @@ h1 {
   padding: 16px;
   line-height: 1.65;
   white-space: pre-line;
+  scroll-behavior: smooth;
 }
 
 .reader-controls {
@@ -355,6 +356,7 @@ h1 {
 
   outline: none;
   text-transform: uppercase;
+  caret-color: var(--primary);
 }
 
 #guessInput:focus {
@@ -546,6 +548,7 @@ h1 {
     width: 100%;
   }
 }
+
   @media (max-width: 430px) {
 
   .hero {
