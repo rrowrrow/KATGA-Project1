@@ -92,16 +92,16 @@
       </div>
 
       <div class="input-wrap">
-        <input
+<input
   id="guessInput"
   type="text"
+  inputmode="text"
   autocomplete="off"
   autocorrect="off"
   autocapitalize="characters"
   spellcheck="false"
-  placeholder="Ketik jawaban..."
-          maxlength="12"
-        />
+  maxlength="12"
+/>
         <div class="input-buttons">
           <button id="backspaceBtn" class="ghost-btn" type="button">Hapus</button>
           <button id="submitBtn" class="primary-btn" type="button">Submit</button>
@@ -112,94 +112,16 @@
     </section>
   </div>
 
-  <!-- Modal -->
-  <div id="modalOverlay" class="modal-overlay hidden" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal-header">
-        <div>
-          <p id="modalEyebrow" class="modal-eyebrow">Info</p>
-          <h3 id="modalTitle">Judul</h3>
-        </div>
-        <button id="modalCloseBtn" class="icon-btn" type="button" aria-label="Tutup">×</button>
-      </div>
-      <div id="modalBody" class="modal-body"></div>
-      <div id="modalActions" class="modal-actions"></div>
-    </div>
-  </div>
-
-  <!-- Toast -->
-  <div id="toast" class="toast"></div>
-  <div id="shareCard" class="share-card">
-
-  <div class="share-logo">
-    ⚡ PLN
-  </div>
-
-<div id="toast" class="toast"></div>
-
-<div id="shareCard" class="share-card">
-
-  <div class="share-title">
-    📢 PESAN HARIAN HSSE
-  </div>
-
-  <div id="shareTitle"></div>
-
-  <div id="shareMessage"></div>
-
-  <div id="shareDate"></div>
-
-  <div id="shareResult"></div>
-
-  <div class="share-footer">
-    🎯 KATGA - Kata Harian HSSE
-  </div>
-
+<!-- Modal -->
+<div id="modalOverlay" class="modal-overlay hidden">
+  ...
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script type="module">
+<!-- Toast -->
+<div id="toast" class="toast"></div>
 
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getFirestore,
-  addDoc,
-  collection
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-
-  apiKey: "AIzaSyB-6lfqdfOzqfoDp118bpvi7SmNufTU9Y8",
-
-  authDomain: "katga-bd583.firebaseapp.com",
-
-  projectId: "katga-bd583",
-
-  storageBucket: "katga-bd583.firebasestorage.app",
-
-  messagingSenderId: "70271543625",
-
-  appId: "1:70271543625:web:f4fa186d5d98391b95d298",
-
-  measurementId: "G-QB23BTQYPV"
-
-};
-
-const app =
-  initializeApp(firebaseConfig);
-
-const db =
-  getFirestore(app);
-
-window.db = db;
-window.addDoc = addDoc;
-window.collection = collection;
-
-console.log("Firebase Connected");
-
+<script type="module">
+  // firebase
 </script>
 
 <script src="script.js"></script>
