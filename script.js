@@ -937,6 +937,8 @@ function escapeHtml(value) {
 
 function getPlayerName() {
 
+    console.log("getPlayerName jalan");
+
   let name =
     localStorage.getItem(
       "katga_name"
