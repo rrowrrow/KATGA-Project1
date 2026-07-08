@@ -112,9 +112,19 @@
     </section>
   </div>
 
-<!-- Modal -->
-<div id="modalOverlay" class="modal-overlay hidden">
-  ...
+  <!-- Modal -->
+  <div id="modalOverlay" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div>
+          <p id="modalEyebrow" class="modal-eyebrow">Info</p>
+          <h3 id="modalTitle">Judul</h3>
+        </div>
+        <button id="modalCloseBtn" class="icon-btn" type="button" aria-label="Tutup">×</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+      <div id="modalActions" class="modal-actions"></div>
+    </div>
 </div>
 
 <!-- Toast -->
