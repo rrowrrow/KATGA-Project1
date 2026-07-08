@@ -938,6 +938,29 @@ function escapeHtml(value) {
 
 function getPlayerName() {
 
+function getPlayerId() {
+
+  let playerId =
+    localStorage.getItem(
+      "katga_player_id"
+    );
+
+  if (!playerId) {
+
+    playerId =
+      crypto.randomUUID();
+
+    localStorage.setItem(
+      "katga_player_id",
+      playerId
+    );
+
+  }
+
+  return playerId;
+
+}
+  
   let name =
     localStorage.getItem(
       "katga_name"
@@ -977,15 +1000,16 @@ async function saveResultToFirebase() {
         window.db,
         "results"
       ),
-      {
-        name: playerName,
-        date: state.todayKey,
-        result: state.result,
-        attempts: state.attempts.length,
-        answer: state.answer,
-        wordLength: state.answer.length,
-        timestamp: Date.now()
-      }
+{
+  playerId: getPlayerId(),
+  name: playerName,
+  date: state.todayKey,
+  result: state.result,
+  attempts: state.attempts.length,
+  answer: state.answer,
+  wordLength: state.answer.length,
+  timestamp: Date.now()
+}
     );
   } catch (error) {
     console.error(error);
