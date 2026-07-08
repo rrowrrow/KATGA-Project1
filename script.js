@@ -936,7 +936,7 @@ function escapeHtml(value) {
 }
 
 
-function getPlayerName() {
+function getPlayerName() {}
 
 function getPlayerId() {
 
