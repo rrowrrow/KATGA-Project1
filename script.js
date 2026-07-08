@@ -2,8 +2,6 @@ const STORAGE_KEY = "katga_beta_v1";
 const CONFIG_URL = "./data/config.json";
 const DAILY_PATH = "./data/daily/";
 const WORD_PATH = "./data/";
-
-
 const state = {
   config: null,
   todayKey: "",
@@ -21,25 +19,19 @@ const state = {
   hasReadMessage: false
 };
 
-
 const els = {};
 let toastTimer = null;
-
-
 document.addEventListener("DOMContentLoaded", () => {
   mapElements();
   bindEvents();
   init();
 });
 
-
 function mapElements() {
   els.streakCount = document.getElementById("streakCount");
   els.bestCount = document.getElementById("bestCount");
   els.statusLabel = document.getElementById("statusLabel");
   els.dateLabel = document.getElementById("dateLabel");
-
-
   els.readerSection = document.getElementById("readerSection");
   els.messageTitle = document.getElementById("messageTitle");
   els.messageCategory = document.getElementById("messageCategory");
@@ -48,8 +40,6 @@ function mapElements() {
   els.confirmRead = document.getElementById("confirmRead");
   els.startGameBtn = document.getElementById("startGameBtn");
   els.readerHint = document.getElementById("readerHint");
-
-
   els.gameSection = document.getElementById("gameSection");
   els.wordLengthBadge = document.getElementById("wordLengthBadge");
   els.gameHint = document.getElementById("gameHint");
@@ -59,30 +49,21 @@ function mapElements() {
   els.backspaceBtn = document.getElementById("backspaceBtn");
   els.submitBtn = document.getElementById("submitBtn");
   els.keyboard = document.getElementById("keyboard");
-
-
   els.helpBtn = document.getElementById("helpBtn");
   els.shareBtn = document.getElementById("shareBtn");
-
-
   els.modalOverlay = document.getElementById("modalOverlay");
   els.modalEyebrow = document.getElementById("modalEyebrow");
   els.modalTitle = document.getElementById("modalTitle");
   els.modalBody = document.getElementById("modalBody");
   els.modalActions = document.getElementById("modalActions");
   els.modalCloseBtn = document.getElementById("modalCloseBtn");
-
-
   els.toast = document.getElementById("toast");
 }
-
 
 function bindEvents() {
   els.messageScrollBox.addEventListener("scroll", handleMessageScroll);
   els.confirmRead.addEventListener("change", updateStartButtonState);
   els.startGameBtn.addEventListener("click", startGame);
-
-
   els.guessInput.addEventListener("input", handleInputChange);
   els.guessInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
@@ -91,15 +72,10 @@ function bindEvents() {
     }
   });
 
-
   els.backspaceBtn.addEventListener("click", removeLastChar);
   els.submitBtn.addEventListener("click", submitGuess);
-
-
   els.helpBtn.addEventListener("click", openHelpModal);
   els.shareBtn.addEventListener("click", () => shareResult(false));
-
-
   els.modalCloseBtn.addEventListener("click", closeModalAndContinue);
   els.modalOverlay.addEventListener("click", (event) => {
     if (event.target === els.modalOverlay) {
@@ -107,24 +83,19 @@ function bindEvents() {
     }
   });
 
-
   document.addEventListener("keydown", (event) => {
     if (state.popupOpen) return;
     if (state.locked) return;
     if (!state.hasReadMessage) return;
-
-
     if (event.key === "Backspace" && document.activeElement !== els.guessInput) {
       removeLastChar();
       return;
     }
 
-
     if (event.key === "Enter" && document.activeElement !== els.guessInput) {
       submitGuess();
       return;
     }
-
 
     if (/^[a-zA-Z]$/.test(event.key) && document.activeElement !== els.guessInput) {
       if (state.current.length >= state.answer.length) return;
@@ -133,23 +104,29 @@ function bindEvents() {
       renderCurrentRow();
     }
   });
+const focusInput = () => {
+
+  if (
+    state.locked ||
+    !state.hasReadMessage
+  ) {
+    return;
+  }
+
+  els.guessInput.focus();
+
+};
+
 els.board.addEventListener(
   "click",
-  () => {
+  focusInput
+);
 
-    if (
-      state.locked ||
-      !state.hasReadMessage
-    ) {
-      return;
-    }
-
-    els.guessInput.focus();
-
-  }
+els.board.addEventListener(
+  "touchstart",
+  focusInput
 );
 }
-
 
 async function init() {
   try {
@@ -167,9 +144,7 @@ async function init() {
     const today = new Date();
 
 
-state.todayKey = formatDate(today);
-console.log("todayKey =", state.todayKey);    
-
+state.todayKey = formatDate(today);    
 
 els.dateLabel.textContent =
   today.toLocaleDateString("id-ID", {
@@ -178,16 +153,9 @@ els.dateLabel.textContent =
     year: "numeric"
   });
 
-
 let todayData = null;
 
-
-try {
-  
-console.log(
-  "Mencari file :",
-  `${DAILY_PATH}${state.todayKey}.json`
-);
+try { 
   const dailyResponse =
     await fetch(
       `${DAILY_PATH}${state.todayKey}.json`,
@@ -209,22 +177,10 @@ if (!state.todayData || !state.todayData.word) {
   throw new Error("Kata harian tidak ditemukan");
 }
 
-state.answer = normalizeWord(state.todayData.word);
-
-
-    els.dateLabel.textContent = today.toLocaleDateString("id-ID", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric"
-    });
-
-
-
     state.answer = normalizeWord(state.todayData.word);
     if (!state.answer) {
       throw new Error("Word harian tidak valid");
     }
-
 
 const wordsResponse = await fetch(
   `${WORD_PATH}words-${state.answer.length}.json`
@@ -237,18 +193,12 @@ if (!wordsResponse.ok) {
   );
 }
 
-
 const validList = await wordsResponse.json();
-
-
 state.validGuessSet = new Set(
   validList.map(normalizeWord).filter(Boolean)
 );
 
-
 state.validGuessSet.add(state.answer);
-
-
     applyTodayDataToUI();
     restoreProgress();
     createBoard();
@@ -256,8 +206,6 @@ state.validGuessSet.add(state.answer);
     renderAttempts();
     syncGameState();
     updateStatsUI();
-
-
     queueStartupHelp();
     processPopupQueue();
   } catch (err) {
@@ -268,50 +216,20 @@ state.validGuessSet.add(state.answer);
   }
 }
 
-
-function getTodayWord(config, todayKey) {
-
-
-  if (Array.isArray(config.dailyWords)) {
-
-
-    const exact = config.dailyWords.find(
-      item => item.date === todayKey
-    );
-
-
-    if (exact) {
-      return exact;
-    }
-  }
-
-
-  return config.defaultWord || null;
-}
-
-
 function applyTodayDataToUI() {
   els.messageTitle.textContent = `Pesan Harian HSSE`;
   els.messageCategory.textContent = state.todayData.category || "-";
-
-
   const fullText = state.todayData.fullMessage || state.todayData.message || "Pesan belum tersedia.";
   els.messageFullText.textContent = fullText;
-
-
   const hint = state.todayData.hint || "Tebak kata kunci dari pesan hari ini";
   els.gameHint.textContent = `Hint: ${hint}`;
   els.wordLengthBadge.textContent = `${state.answer.length} huruf`;
-
-
   els.statusLabel.textContent = state.locked ? "Terkunci" : "Siap";
 }
-
 
 function handleMessageScroll() {
   const el = els.messageScrollBox;
   const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 8;
-
 
   if (isAtBottom) {
     els.confirmRead.disabled = false;
@@ -322,46 +240,29 @@ function handleMessageScroll() {
     els.readerHint.textContent = "Scroll sampai bawah untuk mengaktifkan konfirmasi baca.";
   }
 
-
   updateStartButtonState();
 }
-
 
 function updateStartButtonState() {
   els.startGameBtn.disabled = !(els.confirmRead.checked && !els.confirmRead.disabled);
 }
 
-
 function startGame() {
-
   state.hasReadMessage = true;
-
   els.readerSection.classList.add("hidden");
   els.gameSection.classList.remove("hidden");
-
   syncGameState();
-
   setTimeout(() => {
-
     els.guessInput.focus();
-
-    console.log(
-      "disabled:",
-      els.guessInput.disabled
-    );
-
   }, 300);
 
   els.statusLabel.textContent =
     state.locked ? "Terkunci" : "Main";
-
   setFeedback(
     "Mulai tebak kata kunci hari ini.",
     false
   );
 }
-
-
 
 function createBoard() {
   els.board.innerHTML = "";
@@ -370,8 +271,6 @@ function createBoard() {
     row.className = "board-row";
     row.dataset.row = String(rowIndex);
     row.style.gridTemplateColumns = `repeat(${state.answer.length}, minmax(0, 1fr))`;
-
-
     for (let colIndex = 0; colIndex < state.answer.length; colIndex += 1) {
       const tile = document.createElement("div");
       tile.className = "tile";
@@ -380,11 +279,9 @@ function createBoard() {
       row.appendChild(tile);
     }
 
-
     els.board.appendChild(row);
   }
 }
-
 
 function createKeyboard() {
   const layouts = [
@@ -393,62 +290,45 @@ function createKeyboard() {
     ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "⌫"]
   ];
 
-
   els.keyboard.innerHTML = "";
-
-
   layouts.forEach((layout) => {
     const row = document.createElement("div");
     row.className = "keyboard-row";
-
-
     layout.forEach((keyValue) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "key";
       btn.textContent = keyValue;
       btn.dataset.key = keyValue;
-
-
       if (keyValue === "ENTER" || keyValue === "⌫") {
         btn.classList.add("wide");
       }
-
 
       btn.addEventListener("click", () => handleVirtualKey(keyValue));
       row.appendChild(btn);
     });
 
-
     els.keyboard.appendChild(row);
   });
 }
 
-
 function handleVirtualKey(keyValue) {
   if (state.locked || !state.hasReadMessage || state.popupOpen) return;
-
-
   if (keyValue === "ENTER") {
     submitGuess();
     return;
   }
-
 
   if (keyValue === "⌫") {
     removeLastChar();
     return;
   }
 
-
   if (state.current.length >= state.answer.length) return;
-
-
   state.current += keyValue;
   els.guessInput.value = state.current;
   renderCurrentRow();
 }
-
 
 function handleInputChange(event) {
   if (state.locked || !state.hasReadMessage) return;
@@ -457,12 +337,10 @@ function handleInputChange(event) {
   renderCurrentRow();
 }
 
-
 function renderAttempts() {
   state.attempts.forEach((attempt, index) => {
     paintRow(index, attempt.word, attempt.evaluation);
   });
-
 
   colorKeyboard();
   if (!state.locked) {
@@ -470,11 +348,9 @@ function renderAttempts() {
   }
 }
 
-
 function renderCurrentRow() {
   const row = getRow(state.attempts.length);
   if (!row) return;
-
 
   [...row.children].forEach((tile, index) => {
     const char = state.current[index] || "";
@@ -484,7 +360,6 @@ function renderCurrentRow() {
   });
 }
 
-
 function removeLastChar() {
   if (state.locked || !state.hasReadMessage) return;
   state.current = state.current.slice(0, -1);
@@ -492,28 +367,23 @@ function removeLastChar() {
   renderCurrentRow();
 }
 
-
 function submitGuess() {
   if (state.locked) {
     showToast("Puzzle hari ini sudah terkunci.");
     return;
   }
 
-
   if (!state.hasReadMessage) {
     showToast("Baca pesan keselamatan terlebih dahulu.");
     return;
   }
 
-
   const guess = normalizeWord(state.current);
-
 
   if (guess.length !== state.answer.length) {
     setFeedback(`Jumlah huruf harus ${state.answer.length}.`, true);
     return;
   }
-
 
   if (!state.validGuessSet.has(guess)) {
     setFeedback("Kata tidak ada dalam daftar tebakan valid.", true);
@@ -521,44 +391,30 @@ function submitGuess() {
     return;
   }
 
-
   const evaluation = evaluateGuess(guess, state.answer);
   const attempt = { word: guess, evaluation };
   state.attempts.push(attempt);
-
-
   paintRow(state.attempts.length - 1, guess, evaluation);
   colorKeyboard();
-
-
   state.current = "";
   els.guessInput.value = "";
-
-
   persistPlayingState();
-
-
   if (guess === state.answer) {
     finishGame(true);
     return;
   }
-
 
   if (state.attempts.length >= state.maxAttempts) {
     finishGame(false);
     return;
   }
 
-
   setFeedback("Belum tepat, gunakan petunjuk warna untuk tebakan berikutnya.", false);
 }
-
 
 function evaluateGuess(guess, answer) {
   const result = Array(answer.length).fill("absent");
   const used = Array(answer.length).fill(false);
-
-
   for (let i = 0; i < guess.length; i += 1) {
     if (guess[i] === answer[i]) {
       result[i] = "correct";
@@ -566,11 +422,8 @@ function evaluateGuess(guess, answer) {
     }
   }
 
-
   for (let i = 0; i < guess.length; i += 1) {
     if (result[i] === "correct") continue;
-
-
     for (let j = 0; j < answer.length; j += 1) {
       if (!used[j] && guess[i] === answer[j]) {
         result[i] = "present";
@@ -580,16 +433,12 @@ function evaluateGuess(guess, answer) {
     }
   }
 
-
   return result;
 }
-
 
 function paintRow(rowIndex, word, evaluation) {
   const row = getRow(rowIndex);
   if (!row) return;
-
-
   [...row.children].forEach((tile, index) => {
     tile.textContent = word[index] || "";
     tile.className = "tile";
@@ -598,12 +447,9 @@ function paintRow(rowIndex, word, evaluation) {
   });
 }
 
-
 function colorKeyboard() {
   const priority = { absent: 1, present: 2, correct: 3 };
   const bestByLetter = {};
-
-
   state.attempts.forEach((attempt) => {
     attempt.word.split("").forEach((char, index) => {
       const score = attempt.evaluation[index];
@@ -613,7 +459,6 @@ function colorKeyboard() {
       }
     });
   });
-
 
   document.querySelectorAll(".key").forEach((btn) => {
     const key = btn.dataset.key || "";
@@ -627,16 +472,11 @@ function colorKeyboard() {
   });
 }
 
-
 function finishGame(isWin) {
   state.locked = true;
   state.result = isWin ? "win" : "lose";
-
-
   const storage = readStorage();
   ensureTodayStorage(storage);
-
-
   storage.daily[state.todayKey] = {
     date: state.todayKey,
     result: state.result,
@@ -646,7 +486,6 @@ function finishGame(isWin) {
     hasReadMessage: true
   };
 
-
   storage.stats = updateStats(storage.stats, state.todayKey, isWin);
 saveStorage(storage);
 
@@ -655,11 +494,9 @@ saveResultToFirebase();
 updateStatsUI();
   syncGameState();
 
-
   if (isWin) {
     setFeedback(`Benar! Kata kuncinya: ${state.answer}`, false);
     showToast("Jawaban benar.");
-
 
     state.popupQueue.push({
       eyebrow: "Edukasi Hari Ini",
