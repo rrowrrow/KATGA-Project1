@@ -937,8 +937,6 @@ function escapeHtml(value) {
 
 function getPlayerName() {
 
-    console.log("getPlayerName jalan");
-
   let name =
     localStorage.getItem(
       "katga_name"
@@ -991,8 +989,6 @@ function getPlayerId() {
 
 async function saveResultToFirebase() {
 
-  console.log("saveResultToFirebase jalan");
-  
   if (
     !window.db ||
     !window.addDoc ||
@@ -1003,12 +999,8 @@ async function saveResultToFirebase() {
 
   try {
 
-console.log("sebelum getPlayerName");
-    
     const playerName =
       getPlayerName();
-
-console.log("sesudah getPlayerName");
     
     await window.addDoc(
       window.collection(
