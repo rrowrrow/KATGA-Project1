@@ -1218,36 +1218,32 @@ async function saveResultToFirebase() {
 
   try {
 
-    await window.addDoc(
+   await window.addDoc(
 
-      window.collection(
-        window.db,
-        "results"
-      ),
+  window.collection(
+    window.db,
+    "results"
+  ),
 
-      {
+  {
 
-        name:
-          getPlayerName(),
+    name: playerName,
 
-        date:
-          state.todayKey,
+    date: state.todayKey,
 
-        result:
-          state.result,
+    result: state.result,
 
-        attempts:
-          state.attempts.length,
+    attempts: state.attempts.length,
 
-        answer:
-          state.answer,
+    answer: state.answer,
 
-        timestamp:
-          Date.now()
+    wordLength: state.answer.length,
 
-      }
+    timestamp: Date.now()
 
-    );
+  }
+
+);
 
     console.log(
       "Result saved"
