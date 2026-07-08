@@ -1002,8 +1002,14 @@ async function saveResultToFirebase() {
   }
 
   try {
+
+console.log("sebelum getPlayerName");
+    
     const playerName =
       getPlayerName();
+
+console.log("sesudah getPlayerName");
+    
     await window.addDoc(
       window.collection(
         window.db,
