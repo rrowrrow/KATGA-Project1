@@ -648,10 +648,11 @@ function finishGame(isWin) {
 
 
   storage.stats = updateStats(storage.stats, state.todayKey, isWin);
-  saveStorage(storage);
+saveStorage(storage);
 
+saveResultToFirebase();
 
-  updateStatsUI();
+updateStatsUI();
   syncGameState();
 
 
@@ -1177,4 +1178,85 @@ async function getShareFile() {
 
 }
 
+function getPlayerName() {
 
+  let name =
+    localStorage.getItem(
+      "katga_name"
+    );
+
+  if (!name) {
+
+    name = prompt(
+      "Masukkan Nama Anda"
+    );
+
+    if (name) {
+
+      localStorage.setItem(
+        "katga_name",
+        name
+      );
+
+    }
+
+  }
+
+  return name || "Anonim";
+
+}
+
+async function saveResultToFirebase() {
+
+  if (
+    !window.db ||
+    !window.addDoc ||
+    !window.collection
+  ) {
+    return;
+  }
+
+  try {
+
+    await window.addDoc(
+
+      window.collection(
+        window.db,
+        "results"
+      ),
+
+      {
+
+        name:
+          getPlayerName(),
+
+        date:
+          state.todayKey,
+
+        result:
+          state.result,
+
+        attempts:
+          state.attempts.length,
+
+        answer:
+          state.answer,
+
+        timestamp:
+          Date.now()
+
+      }
+
+    );
+
+    console.log(
+      "Result saved"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+
+}
