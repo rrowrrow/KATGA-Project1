@@ -12,7 +12,7 @@ const state = {
   current: "",
   locked: false,
   result: "playing",
-  hasSharedToday: false,
+  hasSharedToday: false,f
   popupQueue: [],
   popupOpen: false,
   validGuessSet: new Set(),
@@ -602,8 +602,6 @@ function showModal({ eyebrow, title, body, actions = [], skipQueue = false }) {
     btn.addEventListener("click", action.onClick);
     els.modalActions.appendChild(btn);
   });
-
-
   els.modalOverlay.classList.remove("hidden");
   els.modalOverlay.setAttribute("aria-hidden", "false");
 }
@@ -642,36 +640,24 @@ async function shareResult(fromPopup) {
         files: [file]
       })
     ) {
-
       await navigator.share({
-
         title:
           "KATGA - Kata Harian HSSE",
-
         text,
-
         files: [file]
-
       });
-
     } else {
 
       showToast(
         "Perangkat belum mendukung share gambar."
       );
-
     }
-
   } catch (err) {
-
     console.error(err);
-
     showToast(
       "Gagal membagikan hasil."
     );
-
   }
-
 }
 
 
@@ -730,8 +716,6 @@ function fallbackCopy(text) {
 function restoreProgress() {
   const storage = readStorage();
   ensureTodayStorage(storage);
-
-
   const todayState = storage.daily[state.todayKey];
   state.attempts = Array.isArray(todayState.attempts) ? todayState.attempts : [];
   state.locked = Boolean(todayState.locked);
@@ -943,77 +927,6 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
-function prepareShareCard() {
-
-  document.getElementById(
-    "shareTitle"
-  ).textContent =
-    state.todayData.category || "";
-
-  document.getElementById(
-    "shareMessage"
-  ).textContent =
-    state.todayData.fullMessage || "";
-
-  document.getElementById(
-    "shareDate"
-  ).textContent =
-    state.todayKey;
-
-  document.getElementById(
-    "shareResult"
-  ).textContent =
-    `${state.attempts.length}/${state.maxAttempts}`;
-}
-
-async function createShareImage() {
-
-  prepareShareCard();
-
-  const card =
-    document.getElementById(
-      "shareCard"
-    );
-
-  const canvas =
-    await html2canvas(
-      card,
-      {
-        scale: 2
-      }
-    );
-
-  return canvas;
-}
-async function getShareFile() {
-
-  const canvas =
-    await createShareImage();
-
-  return new Promise(
-    (resolve) => {
-
-      canvas.toBlob(
-        (blob) => {
-
-          resolve(
-            new File(
-              [blob],
-              "katga-hsse.png",
-              {
-                type: "image/png"
-              }
-            )
-          );
-
-        },
-        "image/png"
-      );
-
-    }
-  );
-
-}
 
 function getPlayerName() {
 
@@ -1029,18 +942,13 @@ function getPlayerName() {
     );
 
     if (name) {
-
       localStorage.setItem(
         "katga_name",
         name
       );
-
     }
-
   }
-
   return name || "Anonim";
-
 }
 
 async function saveResultToFirebase() {
@@ -1054,42 +962,25 @@ async function saveResultToFirebase() {
   }
 
   try {
-
-   await window.addDoc(
-
-  window.collection(
-    window.db,
-    "results"
-  ),
-
-  {
-
-    name: playerName,
-
-    date: state.todayKey,
-
-    result: state.result,
-
-    attempts: state.attempts.length,
-
-    answer: state.answer,
-
-    wordLength: state.answer.length,
-
-    timestamp: Date.now()
-
-  }
-
-);
-
-    console.log(
-      "Result saved"
+    const playerName =
+      getPlayerName();
+    await window.addDoc(
+      window.collection(
+        window.db,
+        "results"
+      ),
+      {
+        name: playerName,
+        date: state.todayKey,
+        result: state.result,
+        attempts: state.attempts.length,
+        answer: state.answer,
+        wordLength: state.answer.length,
+        timestamp: Date.now()
+      }
     );
-
   } catch (error) {
-
     console.error(error);
-
   }
-
 }
+
