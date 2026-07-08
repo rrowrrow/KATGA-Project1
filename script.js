@@ -935,8 +935,33 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+function getPlayerName() {
 
-function getPlayerName() {}
+  let name =
+    localStorage.getItem(
+      "katga_name"
+    );
+
+  if (!name) {
+
+    name = prompt(
+      "Masukkan Nama Anda"
+    );
+
+    if (name) {
+
+      localStorage.setItem(
+        "katga_name",
+        name
+      );
+
+    }
+
+  }
+
+  return name || "Anonim";
+
+}
 
 function getPlayerId() {
 
@@ -960,27 +985,7 @@ function getPlayerId() {
   return playerId;
 
 }
-  
-  let name =
-    localStorage.getItem(
-      "katga_name"
-    );
 
-  if (!name) {
-
-    name = prompt(
-      "Masukkan Nama Anda"
-    );
-
-    if (name) {
-      localStorage.setItem(
-        "katga_name",
-        name
-      );
-    }
-  }
-  return name || "Anonim";
-}
 
 async function saveResultToFirebase() {
 
