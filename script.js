@@ -12,7 +12,7 @@ const state = {
   current: "",
   locked: false,
   result: "playing",
-  hasSharedToday: false,f
+  hasSharedToday: false,
   popupQueue: [],
   popupOpen: false,
   validGuessSet: new Set(),
