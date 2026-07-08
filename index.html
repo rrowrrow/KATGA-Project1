@@ -158,6 +158,50 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script type="module">
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  addDoc,
+  collection
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyB-6lfqdfOzqfoDp118bpvi7SmNufTU9Y8",
+
+  authDomain: "katga-bd583.firebaseapp.com",
+
+  projectId: "katga-bd583",
+
+  storageBucket: "katga-bd583.firebasestorage.app",
+
+  messagingSenderId: "70271543625",
+
+  appId: "1:70271543625:web:f4fa186d5d98391b95d298",
+
+  measurementId: "G-QB23BTQYPV"
+
+};
+
+const app =
+  initializeApp(firebaseConfig);
+
+const db =
+  getFirestore(app);
+
+window.db = db;
+window.addDoc = addDoc;
+window.collection = collection;
+
+console.log("Firebase Connected");
+
+</script>
+
 <script src="script.js"></script>
 
 </body>
