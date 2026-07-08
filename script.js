@@ -626,38 +626,46 @@ async function shareResult(fromPopup) {
     return;
   }
 
+  const text =
+    buildShareText();
+
   try {
 
-    const file =
-      await getShareFile();
+    if (navigator.share) {
 
-    const text =
-      buildShareText();
-
-    if (
-      navigator.canShare &&
-      navigator.canShare({
-        files: [file]
-      })
-    ) {
       await navigator.share({
-        title:
-          "KATGA - Kata Harian HSSE",
-        text,
-        files: [file]
+        title: "KATGA",
+        text
       });
-    } else {
+
+    } else if (
+      navigator.clipboard?.writeText
+    ) {
+
+      await navigator.clipboard.writeText(
+        text
+      );
 
       showToast(
-        "Perangkat belum mendukung share gambar."
+        "Hasil disalin."
       );
+
+    } else {
+
+      fallbackCopy(text);
+
+      showToast(
+        "Hasil disalin."
+      );
+
     }
+
   } catch (err) {
+
     console.error(err);
-    showToast(
-      "Gagal membagikan hasil."
-    );
+
   }
+
 }
 
 
