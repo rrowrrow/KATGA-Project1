@@ -278,7 +278,7 @@ h1 {
 .tile {
   aspect-ratio: 1;
   width: 100%;
-  min-height: clamp(32px, 8vw, 56px);
+  min-height: clamp(28px, 8vw, 56px);
 
   border-radius: 12px;
 
@@ -543,6 +543,7 @@ h1 {
   .reader-controls button {
     width: 100%;
   }
+}
   @media (max-width: 430px) {
 
   .hero {
@@ -573,56 +574,12 @@ h1 {
   .tile {
     min-height: 30px;
   }
+    button {
+  min-height: 44px;
+}
+
+.key,
+button {
+  touch-action: manipulation;
+}
     
- .share-card {
-
-  position: fixed;
-
-  left: -9999px;
-  top: -9999px;
-
-  width: 1080px;
-
-  background: white;
-
-  padding: 50px;
-
-  color: #10233b;
-
-  font-family: Arial, Helvetica, sans-serif;
-
-  border-radius: 24px;
-}
-
-.share-title {
-
-  font-size: 42px;
-  font-weight: 700;
-
-  color: #00529b;
-
-  margin-bottom: 30px;
-}
-
-#shareMessage {
-
-  font-size: 20px;
-
-  line-height: 1.7;
-
-  white-space: pre-wrap;
-}
-
-.share-footer {
-
-  margin-top: 40px;
-
-  font-size: 28px;
-
-  color: #00529b;
-
-  font-weight: 700;
-}
-  }
-  
-}
