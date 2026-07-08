@@ -45,6 +45,8 @@ input {
 
 button {
   cursor: pointer;
+  min-height: 44px;
+  touch-action: manipulation;
 }
 
 button:disabled,
@@ -286,9 +288,9 @@ h1 {
   place-items: center;
 
   font-size: clamp(
-    0.9rem,
-    2.7vw,
-    1.6rem
+    0.75rem,
+    2.5vw,
+    1.2rem
   );
 
   font-weight: 800;
@@ -574,12 +576,4 @@ h1 {
   .tile {
     min-height: 30px;
   }
-    button {
-  min-height: 44px;
-}
-
-.key,
-button {
-  touch-action: manipulation;
-}
-    
+  
