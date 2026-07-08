@@ -991,6 +991,8 @@ function getPlayerId() {
 
 async function saveResultToFirebase() {
 
+  console.log("saveResultToFirebase jalan");
+  
   if (
     !window.db ||
     !window.addDoc ||
